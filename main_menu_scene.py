@@ -35,7 +35,7 @@ class MainMenuScene(Scene):
                                      parent = self,
                                      scale = 1.25)
                                      
-        self.smoke_run = SpriteNode('shp:BlackSmoke18', 
+        self.smoke_run = SpriteNode('assets/sprites/smoke/BlackSmoke18.png', 
                                      position = self.size / 2,
                                      parent = self,
                                      scale = 1.25)
@@ -46,7 +46,7 @@ class MainMenuScene(Scene):
                                      position = self.size / 2,
                                      color = 'grey')
                                      
-        self.smoke_shop = SpriteNode('shp:BlackSmoke16', 
+        self.smoke_shop = SpriteNode('assets/sprites/smoke/BlackSmoke16.png', 
                                      position = (self.size_of_screen_x - 85, self.size_of_screen_y - 100),
                                      parent = self,
                                      scale = 1.25)
@@ -57,7 +57,7 @@ class MainMenuScene(Scene):
                                      position = (self.size_of_screen_x - 100, self.size_of_screen_y - 100),
                                      color = 'grey')
         
-        self.smoke_credits = SpriteNode('shp:BlackSmoke13', 
+        self.smoke_credits = SpriteNode('assets/sprites/smoke/BlackSmoke13.png', 
                                      position = (100, 100),
                                      parent = self,
                                      scale = 1.25)
@@ -67,7 +67,7 @@ class MainMenuScene(Scene):
                                      parent = self,
                                      position = (100, 100),
                                      color = 'grey')
-        self.smoke_help = SpriteNode('shp:BlackSmoke10', 
+        self.smoke_help = SpriteNode('assets/sprites/smoke/BlackSmoke17.png', 
                                      position = (300, 100),
                                      parent = self,
                                      scale = 1.25)
@@ -78,7 +78,7 @@ class MainMenuScene(Scene):
                                      position = (300, 100),
                                      color = 'grey')
                                      
-        self.smoke_stats = SpriteNode('shp:BlackSmoke15', 
+        self.smoke_stats = SpriteNode('assets/sprites/smoke/BlackSmoke15.png', 
                                      position = (self.size_of_screen_x - 85, self.size_of_screen_y - 300),
                                      parent = self,
                                      scale = 1.25)
@@ -89,15 +89,15 @@ class MainMenuScene(Scene):
                                      position = (self.size_of_screen_x - 100, self.size_of_screen_y - 300),
                                      color = 'grey')
                                      
-        self.smoke_settings = SpriteNode('shp:BlackSmoke19', 
+        self.smoke_settings = SpriteNode('assets/sprites/smoke/BlackSmoke09.png', 
                                      position = (100, self.size_of_screen_y - 200),
                                      parent = self,
                                      scale = 1.25)
                                      
-        self.settings_label = SpriteNode('iow:gear_b_256', 
+        self.settings_label = SpriteNode('assets/sprites/gearw.PNG', 
                                      position = (100, self.size_of_screen_y - 200),
                                      parent = self,
-                                     scale = 0.3,
+                                     scale = 0.17,
                                      color = 'grey')
                                      
                                      
@@ -110,32 +110,32 @@ class MainMenuScene(Scene):
         
         if self.stats_label.frame.contains_point(touch.location):
             self.stats_label_down = True
-            self.stats_label.font = ('Markerfelt-Wide',45)
+            
             self.start_time = time.time()
             self.present_modal_scene(StatsScene())
         if self.shop_label.frame.contains_point(touch.location):
             self.shop_label_down = True
-            self.shop_label.font = ('Markerfelt-Wide',45)
+            
             self.start_time = time.time()
             self.present_modal_scene(ShopScene())
         if self.settings_label.frame.contains_point(touch.location):
             self.settings_label_down = True
-            self.settings_label.scale = 0.4
+           
             self.start_time = time.time()
             self.present_modal_scene(SettingsScene())
         if self.run_label.frame.contains_point(touch.location):
             self.run_label_down = True
-            self.run_label.font = ('Markerfelt-Wide',60)
+            
             self.start_time = time.time()
             self.present_modal_scene(GameScene())
         if self.credits_label.frame.contains_point(touch.location):
             self.credits_label_down = True
-            self.credits_label.font = ('Markerfelt-Wide',45)
+            
             self.start_time = time.time()
             self.present_modal_scene(CreditsScene())
         if self.help_label.frame.contains_point(touch.location):
             self.help_label_down = True
-            self.help_label.font = ('Markerfelt-Wide',45)
+            
             self.start_time = time.time()
             self.present_modal_scene(HelpScene())
         

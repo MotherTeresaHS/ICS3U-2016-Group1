@@ -8,7 +8,10 @@ from main_menu_scene import *
 class StatsScene(Scene):
     def setup(self):
         # this method is called, when user moves to this scene
-        
+        self.size_of_screen_x = self.size.x
+        self.size_of_screen_y = self.size.y
+        self.screen_center_x = self.size_of_screen_x/2
+        self.screen_center_y = self.size_of_screen_y/2
         # create timer, so that after 2 seconds move to next scene
         self.start_time = time.time()
         
@@ -19,18 +22,19 @@ class StatsScene(Scene):
                                      scale = 1.25)
                                      
         self.game_label = LabelNode(text = 'Stats',
-                                     font=('Markerfelt-Wide', 80),
+                                     font=('Markerfelt-Wide', 40),
                                      parent = self,
-                                     position = self.size / 2,
+                                     position = (self.size_of_screen_x - 50, self.size_of_screen_y - 40),
                                      color = 'grey')
                                      
         back_button_position = self.size
         back_button_position.x = 75
         back_button_position.y = back_button_position.y - 75
-        self.back_button = SpriteNode('typw:Back',
+        self.back_button = SpriteNode('assets/sprites/backw.PNG',
                                        parent = self,
                                        position = back_button_position,
-                                       scale = 1.5)
+                                       scale = 0.17,
+                                       color = 'grey')
                                        
     def update(self):
         # this method is called, hopefully, 60 times a second

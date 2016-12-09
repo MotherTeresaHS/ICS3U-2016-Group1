@@ -8,7 +8,10 @@ from main_menu_scene import *
 class GameScene(Scene):
     def setup(self):
         # this method is called, when user moves to this scene
-        
+        self.size_of_screen_x = self.size.x
+        self.size_of_screen_y = self.size.y
+        self.screen_center_x = self.size_of_screen_x/2
+        self.screen_center_y = self.size_of_screen_y/2
         # create timer, so that after 2 seconds move to next scene
         self.start_time = time.time()
         
