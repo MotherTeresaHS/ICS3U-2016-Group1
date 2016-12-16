@@ -14,6 +14,12 @@ from main_menu_scene import *
 class SplashScene(Scene):
     def setup(self):
         # this method is called, when user moves to this scene
+        self.loadbar = []
+        self.timee = 0
+        self.size_of_screen_x = self.size.x
+        self.size_of_screen_y = self.size.y
+        self.screen_center_x = self.size_of_screen_x/2
+        self.screen_center_y = self.size_of_screen_y/2
         
         # create timer, so that after 2 seconds move to next scene
         self.start_time = time.time()
@@ -28,14 +34,29 @@ class SplashScene(Scene):
                                      font=('Markerfelt-Wide', 80),
                                      parent = self,
                                      position = self.size / 2,
-                                     color = 'grey')
+                                     color = '#565656')
     def update(self):
-        # this method is called, hopefully, 60 times a second
+        #this method is called, hopefully, 60 times a second
+        self.bar = self.screen_center_y - 200
+        self.fulltimee = 100
+        self.loadmaxpixels = 400
+        self.pixels = int(self.loadmaxpixels * self.timee / self.fulltimee)
+        self.offset = int((self.loadmaxpixels - self.pixels) / 2)
+        self.percent = int(self.timee * 100 / self.fulltimee)
         
-        # after 2 seconds, move to main menu scene
-        if not self.presented_scene and time.time() - self.start_time > 3:
+        
+       
+        if self.timee == self.fulltimee or self.timee > 100:
+           if not self.presented_scene and time.time() - self.start_time > 1.5:
             self.dismiss_modal_scene()
             self.present_modal_scene(MainMenuScene())
+        else:
+           self.timee = self.timee + random.randint(1,2)
+           for loadingbar in self.loadbar:
+                loadingbar.remove_from_parent()
+                self.loadbar.remove(loadingbar)
+           self.disloadbar()
+           
     
     def touch_began(self, touch):
         # this method is called, when user touches the screen
@@ -63,4 +84,11 @@ class SplashScene(Scene):
         # this method is called, when user place app from background 
         # back into use. Reload anything you might need.
         pass
-    
+    def disloadbar(self):
+        
+        self.loadbar.append((SpriteNode('./assets/sprites/health.PNG', 
+                              position = (self.screen_center_x - self.offset, self.bar + 69),
+                              parent = self,
+                              scale = 1,
+                              size = (self.pixels, 42),
+                              color = 'black')))

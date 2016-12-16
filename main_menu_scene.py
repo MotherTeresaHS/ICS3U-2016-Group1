@@ -17,6 +17,7 @@ from settings_scene import *
 
 class MainMenuScene(Scene):
     def setup(self):
+        shop = HitAndRunShopScene()
         self.run_label_down = False
         self.help_label_down = False
         self.settings_label_down = False
@@ -100,7 +101,12 @@ class MainMenuScene(Scene):
                                      scale = 0.17,
                                      color = 'grey')
                                      
-                                     
+        self.coins_label = LabelNode(text = 'Coins - ' + str(shop.get_coins()),
+                                     font=('CopperPlate-Light', 30),
+                                     parent = self,
+                                     position = (self.screen_center_x, self.size_of_screen_y - 50),
+                                     color = 'gold')
+        
     def update(self):
         # this method is called, hopefully, 60 times a second
         pass
@@ -108,6 +114,16 @@ class MainMenuScene(Scene):
     def touch_began(self, touch):
         # this method is called, when user touches the screen
         
+        pass
+        
+        
+    
+    def touch_moved(self, touch):
+        # this method is called, when user moves a finger around on the screen
+        pass
+    
+    def touch_ended(self, touch):
+        # this method is called, when user releases a finger from the screen
         if self.stats_label.frame.contains_point(touch.location):
             self.stats_label_down = True
             
@@ -117,7 +133,7 @@ class MainMenuScene(Scene):
             self.shop_label_down = True
             
             self.start_time = time.time()
-            self.present_modal_scene(ShopScene())
+            self.present_modal_scene(HitAndRunShopScene())
         if self.settings_label.frame.contains_point(touch.location):
             self.settings_label_down = True
            
@@ -138,16 +154,6 @@ class MainMenuScene(Scene):
             
             self.start_time = time.time()
             self.present_modal_scene(HelpScene())
-        
-        
-    
-    def touch_moved(self, touch):
-        # this method is called, when user moves a finger around on the screen
-        pass
-    
-    def touch_ended(self, touch):
-        # this method is called, when user releases a finger from the screen
-        pass
     
     def did_change_size(self):
         # this method is called, when user changes the orientation of the screen
