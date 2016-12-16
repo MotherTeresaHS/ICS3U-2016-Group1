@@ -3,8 +3,13 @@ from scene import *
 import time
 import ui
 
-from main_menu_scene import *
-from shop_scene import *
+import globals 
+import stats_scene 
+import credits_scene 
+import shop_scene 
+import help_scene 
+import game_scene 
+import settings_scene 
 
 class StatsScene(Scene):
     def setup(self):
@@ -32,8 +37,93 @@ class StatsScene(Scene):
                                      position = (self.size_of_screen_x - 55, self.size_of_screen_y - 40),
                                      color = 'grey')
                                      
-        self.showstatlabel()
-        self.showstat()
+        self.health_label = LabelNode(text = 'HEALTH',
+                                     font=('CopperPlate-Light', 40),
+                                     parent = self,
+                                     position = (110, self.size_of_screen_y - 400),
+                                     color = 'grey')
+                                     
+                                     
+                                     
+        self.playerdmg_label = LabelNode(text = 'DAMAGE',
+                                     font=('CopperPlate-Light', 40),
+                                     parent = self,
+                                     position = (114, self.size_of_screen_y - 200),
+                                     color = 'grey')
+                                     
+        self.playercritdmg_label = LabelNode(text = 'CRIT DAMAGE',
+                                     font=('CopperPlate-Light', 40),
+                                     parent = self,
+                                     position = (169, self.size_of_screen_y - 250),
+                                     color = 'grey')
+                                     
+        self.playercritchance_label = LabelNode(text = 'CRIT CHANCE',
+                                     font=('CopperPlate-Light', 40),
+                                     parent = self,
+                                     position = (170, self.size_of_screen_y - 300),
+                                     color = 'grey')
+                                     
+        self.playerselfregen_label = LabelNode(text = 'REGEN',
+                                     font=('CopperPlate-Light', 40),
+                                     parent = self,
+                                     position = (100, self.size_of_screen_y - 350),
+                                     color = 'grey')
+                                     
+        self.playerarmor_label = LabelNode(text = 'ARMOR',
+                                     font=('CopperPlate-Light', 40),
+                                     parent = self,
+                                     position = (102, self.size_of_screen_y - 450),
+                                     color = 'grey')
+                                     
+        self.playeratkspeed_label = LabelNode(text = 'ATTACK CD',
+                                     font=('CopperPlate-Light', 40),
+                                     parent = self,
+                                     position = (141, self.size_of_screen_y - 500),
+                                     color = 'grey')
+                                     
+        self.health_label = LabelNode(text = str(globals.fullhealth) + 'hp',
+                            font = ('CopperPlate-Light', 20),
+                            parent = self,
+                            position = (self.screen_center_x+100, self.size_of_screen_y - 400),
+                            color = '#d40000')
+                                     
+                                     
+                                     
+        self.playerdmg_label = LabelNode(text = str(globals.playerdmglowest) + '-' + str(globals.playerdmghighest) + 'dmg',
+                                         font = ('CopperPlate-Light', 20),
+                                         parent = self,
+                                         position = (self.screen_center_x + 100, self.size_of_screen_y - 200),
+                                         color = '#32cce3')
+                                     
+        self.playercritdmg_label = LabelNode(text = str(globals.playercritdmglowest) + '-' + str(globals.playercritdmghighest) + 'dmg',
+                                   font = ('CopperPlate-Light', 20),
+                                   parent = self,
+                                   position = (self.screen_center_x + 100, self.size_of_screen_y - 250),
+                                   color = '#7f00b8')
+                                     
+        self.playercritchance_label = LabelNode(text = str(globals.playercritchance) + '%',
+                                      font = ('CopperPlate-Light', 20),
+                                      parent = self,
+                                      position = (self.screen_center_x + 100, self.size_of_screen_y - 300),
+                                      color = '#c66d0b')
+                                     
+        self.playerselfregen_label = LabelNode(text = str(globals.overtimeregen) + 'hp /5s',
+                                     font=('CopperPlate-Light', 20),
+                                     parent = self,
+                                     position = (self.screen_center_x + 100, self.size_of_screen_y - 350),
+                                     color = '#28e400')
+                                     
+        self.playerarmor_label = LabelNode(text = str(globals.playerarmor) + '%',
+                                     font=('CopperPlate-Light', 20),
+                                     parent = self,
+                                     position = (self.screen_center_x + 100, self.size_of_screen_y - 450),
+                                     color = '#cbcbcb')
+                                     
+        self.playeratkspeed_label = LabelNode(text = str(globals.playeratkspeed) + 's',
+                                     font=('CopperPlate-Light', 20),
+                                     parent = self,
+                                     position = (self.screen_center_x + 100, self.size_of_screen_y - 500),
+                                     color = '#ffd028')
                                      
         back_button_position = self.size
         back_button_position.x = 75
@@ -78,93 +168,3 @@ class StatsScene(Scene):
         # this method is called, when user place app from background 
         # back into use. Reload anything you might need.
         pass
-    def showstatlabel(self):
-        self.health_label = LabelNode(text = '[HEALTH]',
-                                     font=('CopperPlate-Light', 40),
-                                     parent = self,
-                                     position = (110, self.size_of_screen_y - 400),
-                                     color = '#d40000')
-                                     
-                                     
-                                     
-        self.playerdmg_label = LabelNode(text = '[DMG]',
-                                     font=('CopperPlate-Light', 40),
-                                     parent = self,
-                                     position = (75, self.size_of_screen_y - 200),
-                                     color = '#32cce3')
-                                     
-        self.playercritdmg_label = LabelNode(text = '[CRIT DMG]',
-                                     font=('CopperPlate-Light', 40),
-                                     parent = self,
-                                     position = (127, self.size_of_screen_y - 250),
-                                     color = '#7f00b8')
-                                     
-        self.playercritchance_label = LabelNode(text = '[CRIT CHANCE]',
-                                     font=('CopperPlate-Light', 40),
-                                     parent = self,
-                                     position = (170, self.size_of_screen_y - 300),
-                                     color = '#c66d0b')
-                                     
-        self.playerselfregen_label = LabelNode(text = '[REGEN]',
-                                     font=('CopperPlate-Light', 40),
-                                     parent = self,
-                                     position = (100, self.size_of_screen_y - 350),
-                                     color = '#28e400')
-                                     
-        self.playerarmor_label = LabelNode(text = '[ARMOR]',
-                                     font=('CopperPlate-Light', 40),
-                                     parent = self,
-                                     position = (100, self.size_of_screen_y - 450),
-                                     color = '#cbcbcb')
-                                     
-        self.playeratkspeed_label = LabelNode(text = '[ATTACK SPEED]',
-                                     font=('CopperPlate-Light', 40),
-                                     parent = self,
-                                     position = (180, self.size_of_screen_y - 500),
-                                     color = '#ffd028')
-                                     
-    def showstat(self):
-        shop = HitAndRunShopScene()
-        self.health_label = LabelNode(text = str(shop.get_fullhealth()) + 'hp',
-                            font = ('CopperPlate-Light', 20),
-                            parent = self,
-                            position = (self.screen_center_x+100, self.size_of_screen_y - 400),
-                            color = '#d40000')
-                                     
-                                     
-                                     
-        self.playerdmg_label = LabelNode(text = str(shop.get_playerdmglowest()) + '-' + str(shop.get_playerdmghighest()) + 'dmg',
-                               font = ('CopperPlate-Light', 20),
-                               parent = self,
-                               position = (self.screen_center_x+100, self.size_of_screen_y - 200),
-                               color = '#32cce3')
-                                     
-        self.playercritdmg_label = LabelNode(text = str(shop.get_playercritdmglowest()) + '-' + str(shop.get_playercritdmghighest()) + 'dmg',
-                                   font = ('CopperPlate-Light', 20),
-                                   parent = self,
-                                   position = (self.screen_center_x+100, self.size_of_screen_y - 250),
-                                   color = '#7f00b8')
-                                     
-        self.playercritchance_label = LabelNode(text = str(shop.get_playercritchance()) + '%',
-                                      font = ('CopperPlate-Light', 20),
-                                      parent = self,
-                                      position = (self.screen_center_x+100, self.size_of_screen_y - 300),
-                                      color = '#c66d0b')
-                                     
-        self.playerselfregen_label = LabelNode(text = str(shop.get_overtimeregen()) + 'hp /s',
-                                     font=('CopperPlate-Light', 20),
-                                     parent = self,
-                                     position = (self.screen_center_x+100, self.size_of_screen_y - 350),
-                                     color = '#28e400')
-                                     
-        self.playerarmor_label = LabelNode(text = str(shop.get_playerarmor()) + '%',
-                                     font=('CopperPlate-Light', 20),
-                                     parent = self,
-                                     position = (self.screen_center_x+100, self.size_of_screen_y - 450),
-                                     color = '#cbcbcb')
-                                     
-        self.playeratkspeed_label = LabelNode(text = str(shop.get_playeratkspeed()) + 'hit /s',
-                                     font=('CopperPlate-Light', 20),
-                                     parent = self,
-                                     position = (self.screen_center_x+100, self.size_of_screen_y - 500),
-                                     color = '#ffd028')

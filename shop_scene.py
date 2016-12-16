@@ -3,21 +3,21 @@ from scene import *
 import time
 import ui
 
-from main_menu_scene import *
+import globals 
+import stats_scene 
+import credits_scene 
+import shop_scene 
+import help_scene 
+import game_scene 
+import settings_scene 
+
+
 
 class HitAndRunShopScene(Scene):
-    def __init__(self):
-        self.__coins = 100
-        self.__fullhealth = 100
-        self.__playerdmglowest = 50
-        self.__playerdmghighest = 75
-        self.__playercritchance = 5.25
-        self.__playercritdmglowest = self.__playerdmglowest * 2
-        self.__playercritdmghighest = self.__playerdmghighest * 2
-        self.__overtimeregen = 5
-        self.__playerarmor = 1.25
-        self.__playeratkspeed = 1
     def setup(self):
+        self.coinss = []
+        self.heart = []
+        self.heartshow = 1
         self.fixed_time_step = 'Nill'
         self.size_of_screen_x = self.size.x
         self.size_of_screen_y = self.size.y
@@ -40,11 +40,6 @@ class HitAndRunShopScene(Scene):
                                      position = (self.size_of_screen_x - 50, self.size_of_screen_y - 40),
                                      color = 'grey')
                                      
-        self.coins_label = LabelNode(text = 'Coins - ' + str(self.__coins),
-                                     font=('CopperPlate-Light', 30),
-                                     parent = self,
-                                     position = (self.screen_center_x, self.size_of_screen_y - 50),
-                                     color = 'gold')
         
         self.back_button = SpriteNode('assets/sprites/backw.PNG',
                                        parent = self,
@@ -52,11 +47,94 @@ class HitAndRunShopScene(Scene):
                                        scale = 0.17,
                                        color = 'grey')
                                        
+        self.backsquare1 = SpriteNode('assets/sprites/shop/shoptab.PNG',
+                                       parent = self,
+                                       position = (self.screen_center_x, self.screen_center_y),
+                                       scale = 0.55,
+                                       color = 'grey')
+                                       
+        self.backsquare2 = SpriteNode('assets/sprites/shop/shoptab.PNG',
+                                       parent = self,
+                                       position = (self.screen_center_x + 193, self.screen_center_y),
+                                       scale = 0.55,
+                                       color = 'grey')
+        self.backsquare3 = SpriteNode('assets/sprites/shop/shoptab.PNG',
+                                       parent = self,
+                                       position = (self.screen_center_x - 193, self.screen_center_y),
+                                       scale = 0.55,
+                                       color = 'grey')
+        self.backsquare4 = SpriteNode('assets/sprites/shop/shoptab.PNG',
+                                       parent = self,
+                                       position = (self.screen_center_x, self.screen_center_y - 289),
+                                       scale = 0.55,
+                                       color = 'grey')
+                                       
+        self.backsquare5 = SpriteNode('assets/sprites/shop/shoptab.PNG',
+                                       parent = self,
+                                       position = (self.screen_center_x + 193, self.screen_center_y - 289),
+                                       scale = 0.55,
+                                       color = 'grey')
+        self.backsquare6 = SpriteNode('assets/sprites/shop/shoptab.PNG',
+                                       parent = self,
+                                       position = (self.screen_center_x - 193, self.screen_center_y - 289),
+                                       scale = 0.55,
+                                       color = 'grey')
+        
+        self.heartback = SpriteNode('./assets/sprites/shop/frame-1.png',
+                                     parent = self,
+                                     scale = 0.12,
+                                     position = (self.screen_center_x, self.screen_center_y + 5))
+        
+        self.hp_boost_label = LabelNode(text = 'HP BOOST',
+                                     font=('CopperPlate-Light', 10),
+                                     parent = self,
+                                     position = (self.screen_center_x, self.screen_center_y - 30),
+                                     color = 'red')
+        
     def update(self):
         # this method is called, hopefully, 60 times a second
-        pass
+        
+        
         # after 2 seconds, move to main menu scene
-    
+        for displaycoins in self.coinss:
+            displaycoins.remove_from_parent()
+            self.coinss.remove(displaycoins)
+        self.coinss.append(LabelNode(text = 'Coins - ' + str(globals.coins),
+                                     font = ('CopperPlate-Light', 30),
+                                     parent = self,
+                                     position = (self.screen_center_x, self.size_of_screen_y - 50),
+                                     color = 'gold'))
+        
+        
+        for heartshine in self.heart:
+            heartshine.remove_from_parent()
+            self.heart.remove(heartshine)
+            self.heartshow = self.heartshow + 1
+            time.sleep(0.08)
+        if self.heartshow == 1:
+            self.heart.append(SpriteNode('./assets/sprites/shop/frame-1.png',
+                                     parent = self,
+                                     scale = 0.12,
+                                     position = (self.screen_center_x, self.screen_center_y + 5)))
+                                     
+        elif self.heartshow == 2:
+            self.heart.append(SpriteNode('./assets/sprites/shop/frame-2.png',
+                                     parent = self,
+                                     scale = 0.12,
+                                     position = (self.screen_center_x, self.screen_center_y + 5)))
+        elif self.heartshow == 3:
+            self.heart.append(SpriteNode('./assets/sprites/shop/frame-3.png',
+                                     parent = self,
+                                     scale = 0.12,
+                                     position = (self.screen_center_x, self.screen_center_y + 5)))
+        elif self.heartshow == 4:
+            self.heart.append(SpriteNode('./assets/sprites/shop/frame-4.png',
+                                     parent = self,
+                                     scale = 0.12,
+                                     position = (self.screen_center_x, self.screen_center_y + 5)))
+        elif self.heartshow >= 5:
+            self.heartshow = 1
+        
     def touch_began(self, touch):
         # this method is called, when user touches the screen
         pass
@@ -85,32 +163,7 @@ class HitAndRunShopScene(Scene):
         # back into use. Reload anything you might need.
         pass
         
-    def get_fullhealth(self):
-        return self.__fullhealth
     
-    def get_playerdmglowest(self):
-        return self.__playerdmglowest
-        
-    def get_playerdmghighest(self):
-        return self.__playerdmghighest
-        
-    def get_playercritchance(self):
-        return self.__playercritchance
-        
-    def get_playercritdmglowest(self):
-        return self.__playercritdmglowest
+                                     
     
-    def get_playercritdmghighest(self):
-        return self.__playercritdmghighest
         
-    def get_overtimeregen(self):
-        return self.__overtimeregen
-    
-    def get_playerarmor(self):
-        return self.__playerarmor
-        
-    def get_playeratkspeed(self):
-        return self.__playeratkspeed
-    
-    def get_coins(self):
-        return self.__coins
