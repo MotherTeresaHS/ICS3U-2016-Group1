@@ -8,6 +8,7 @@ from scene import *
 import time
 import ui
 
+import globals 
 from stats_scene import *
 from credits_scene import *
 from shop_scene import *
@@ -17,7 +18,7 @@ from settings_scene import *
 
 class MainMenuScene(Scene):
     def setup(self):
-        shop = HitAndRunShopScene()
+        self.coinss = []
         self.run_label_down = False
         self.help_label_down = False
         self.settings_label_down = False
@@ -101,15 +102,22 @@ class MainMenuScene(Scene):
                                      scale = 0.17,
                                      color = 'grey')
                                      
-        self.coins_label = LabelNode(text = 'Coins - ' + str(shop.get_coins()),
-                                     font=('CopperPlate-Light', 30),
-                                     parent = self,
-                                     position = (self.screen_center_x, self.size_of_screen_y - 50),
-                                     color = 'gold')
+        
         
     def update(self):
         # this method is called, hopefully, 60 times a second
-        pass
+        # after 2 seconds, move to main menu scene
+        
+        
+        
+        for displaycoins in self.coinss:
+            displaycoins.remove_from_parent()
+            self.coinss.remove(displaycoins)
+        self.coinss.append(LabelNode(text = 'Coins - ' + str(globals.coins),
+                                     font=('CopperPlate-Light', 30),
+                                     parent = self,
+                                     position = (self.screen_center_x, self.size_of_screen_y - 50),
+                                     color = 'gold'))
     
     def touch_began(self, touch):
         # this method is called, when user touches the screen
@@ -170,3 +178,5 @@ class MainMenuScene(Scene):
         # back into use. Reload anything you might need.
         pass
     
+    
+        
