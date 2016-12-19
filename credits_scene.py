@@ -19,6 +19,7 @@ class CreditsScene(Scene):
         self.background = SpriteNode('./assets/sprites/background.JPG', 
                                      position = self.size / 2,
                                      parent = self,
+                                     size = self.size,
                                      scale = 1.25)
                                      
         self.game_label = LabelNode(text = 'Credits',

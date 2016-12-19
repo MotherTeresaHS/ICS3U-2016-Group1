@@ -31,6 +31,7 @@ class SplashScene(Scene):
         self.background = SpriteNode('./assets/sprites/backgroundload.JPG', 
                                      position = self.size / 2,
                                      parent = self,
+                                     size = self.size,
                                      scale = 1.15)
                                      
         self.game_label = LabelNode(text = 'HIT & RUN',

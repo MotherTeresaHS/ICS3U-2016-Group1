@@ -43,6 +43,7 @@ class GameScene(Scene):
         self.background = SpriteNode('./assets/sprites/background.JPG', 
                                      position = self.size / 2,
                                      parent = self,
+                                     size = self.size,
                                      scale = 1.25)
                                      
         self.pause_button = SpriteNode('assets/sprites/game/pause.PNG',
@@ -85,22 +86,22 @@ class GameScene(Scene):
         # this method is called, hopefully, 60 times a second
         # after 2 seconds, move to main menu scene
         
-        
-        
-        
-        for roadpiece in range(self.pathrange):
-            
-            self.pathy[roadpiece] = self.pathy[roadpiece] - 4
-            for roadp in self.pathsprites:
+        for roadp in self.pathsprites:
                 roadp.remove_from_parent()
                 self.pathsprites.remove(roadp)
+        for roadp in self.pathsprites:
+                roadp.remove_from_parent()
+                self.pathsprites.remove(roadp)
+        print (len(self.pathsprites))
+        
+        for roadpiece in range(self.pathrange):
+            self.pathy[roadpiece] = self.pathy[roadpiece] - 4
             if self.pathy[roadpiece] < -111:
-
                 self.pathy[roadpiece] = self.pathrange * 222 - 112
                 self.pathnames[roadpiece] = './assets/sprites/game/road.JPG'
-           # print(str(roadpiece) + ' ' + str(self.pathy[roadpiece]))
+            #print(str(roadpiece) + ' ' + str(self.pathy[roadpiece]))
             self.pathsprites.append(SpriteNode(self.pathnames[roadpiece],
-                                               position = (self.screen_center_x + (roadpiece*10), self.pathy[roadpiece]),
+                                               position = (self.screen_center_x, self.pathy[roadpiece]),
                                                parent = self))
             
         print (len(self.pathsprites))
@@ -108,7 +109,7 @@ class GameScene(Scene):
         for hpbar in self.healthbar:
                 hpbar.remove_from_parent()
                 self.healthbar.remove(hpbar)
-        self.bar = self.screen_center_y - 460
+        self.bar = 250
         self.healthmaxpixels = 300
         self.pixels = self.healthmaxpixels * globals.fullhealth / globals.fullhealth
         self.offset = (self.healthmaxpixels - self.pixels) / 2

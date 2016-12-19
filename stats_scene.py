@@ -20,6 +20,7 @@ class StatsScene(Scene):
         self.background = SpriteNode('./assets/sprites/background.JPG', 
                                      position = (self.screen_center_x, self.screen_center_y),
                                      parent = self,
+                                     size = self.size,
                                      scale = 1.25)
                                      
         
