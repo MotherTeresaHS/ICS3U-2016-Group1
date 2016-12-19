@@ -3,6 +3,8 @@
 # Created for: ICS3U
 # This scene shows the main menu.
 
+#
+
 from scene import *
 
 import time
@@ -35,6 +37,7 @@ class MainMenuScene(Scene):
         self.background = SpriteNode('./assets/sprites/background.JPG', 
                                      position = self.size / 2,
                                      parent = self,
+                                     size = self.size,
                                      scale = 1.25)
                                      
         self.smoke_run = SpriteNode('assets/sprites/smoke/BlackSmoke18.png', 

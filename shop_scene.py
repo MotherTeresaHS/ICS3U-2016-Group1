@@ -1,19 +1,16 @@
+#
+
+
 from scene import *
 
 import time
 import ui
 
-import globals 
-import stats_scene 
-import credits_scene 
-import shop_scene 
-import help_scene 
-import game_scene 
-import settings_scene 
-
-
-
+import globals
+import gamepick
 class HitAndRunShopScene(Scene):
+	#
+	
     def setup(self):
         self.coinss = []
         self.heart = []
@@ -32,6 +29,7 @@ class HitAndRunShopScene(Scene):
         self.background = SpriteNode('assets/sprites/background.JPG', 
                                      position = self.size / 2,
                                      parent = self,
+                                     size = self.size,
                                      scale = 1.25)
                                      
         self.game_label = LabelNode(text = 'Shop',
@@ -90,11 +88,14 @@ class HitAndRunShopScene(Scene):
                                      parent = self,
                                      position = (self.screen_center_x, self.screen_center_y - 30),
                                      color = 'red')
+        globals.coins = globals.coins + 10
         
+       
     def update(self):
         # this method is called, hopefully, 60 times a second
         
         
+       
         # after 2 seconds, move to main menu scene
         for displaycoins in self.coinss:
             displaycoins.remove_from_parent()
