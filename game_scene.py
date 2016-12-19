@@ -109,7 +109,7 @@ class GameScene(Scene):
         for hpbar in self.healthbar:
                 hpbar.remove_from_parent()
                 self.healthbar.remove(hpbar)
-        self.bar = self.screen_center_y - 460
+        self.bar = 250
         self.healthmaxpixels = 300
         self.pixels = self.healthmaxpixels * globals.fullhealth / globals.fullhealth
         self.offset = (self.healthmaxpixels - self.pixels) / 2
