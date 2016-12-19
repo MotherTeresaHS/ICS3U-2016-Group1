@@ -4,18 +4,20 @@
 # This scene shows a splash screen for 2 seconds,
 #   then transitions to the main menu.
 
+# 
+
 from scene import *
 import ui
 import time
 import random
 
 
-
-from main_menu_scene import *
+from gamepick import *
 
 
 class SplashScene(Scene):
     def setup(self):
+        
         # this method is called, when user moves to this scene
         self.size_of_screen_x = self.size.x
         self.size_of_screen_y = self.size.y
@@ -32,10 +34,10 @@ class SplashScene(Scene):
                                      scale = 1.15)
                                      
         self.game_label = LabelNode(text = 'HIT & RUN',
-                                     font=('CopperPlate-Bold', 80),
-                                     parent = self,
-                                     position = (self.screen_center_x, self.screen_center_y + 75),
-                                     color = 'black')
+                                    font=('CopperPlate-Bold', 80),
+                                    parent = self,
+                                    position = (self.screen_center_x, self.screen_center_y + 75),
+                                    color = 'black')
                                      
         self.loadbarback = (SpriteNode('./assets/sprites/game/emptybar.JPG', 
                               position = (self.screen_center_x, self.screen_center_y - 15),
@@ -73,16 +75,16 @@ class SplashScene(Scene):
         self.fulltimee = 380
         self.bar = self.screen_center_y - 15
         self.loadmaxpixels = 380
-        self.pixels = int(self.loadmaxpixels * self.timee / self.fulltimee)
-        self.offset = int((self.loadmaxpixels - self.pixels) / 2)
-        self.percent = int(self.timee * 100 / self.fulltimee)
+        self.pixels = int(self.loadmaxpixels * self.timee) / int(self.fulltimee)
+        self.offset = (self.loadmaxpixels - self.pixels) / 2
+        self.percent = (self.timee * 100) / self.fulltimee
         
         
                               
         if self.timee >= 380:
             if not self.presented_scene and time.time() - self.start_time > 3:
                self.dismiss_modal_scene()
-               self.present_modal_scene(MainMenuScene())
+               self.present_modal_scene(GamePick())
         else:
            self.timee = self.timee + random.randint(2,2)
            for loadingbar in self.loadbar:
@@ -90,20 +92,30 @@ class SplashScene(Scene):
                 self.loadbar.remove(loadingbar)
         
         
-        
-        
         self.loadbar.append(SpriteNode('./assets/sprites/splash/loadbar.PNG', 
                               position = (self.screen_center_x - self.offset, self.bar),
                               parent = self,
                               scale = 1,
-                              size = (self.pixels, 25)))
+                              size = (int(self.pixels), 25)))
                               
-        self.loadbar.append(LabelNode(text = str(self.percent) + '%',
+        if self.percent <= 30:
+            self.loadbar.append(LabelNode(text = str(self.percent) + '%',
                                       position = (self.screen_center_x, self.bar),
-                                      color = '#29dd39',
+                                      color = '#ff0000',
                                       font = ('CopperPlate-Bold', 18),
                                       parent = self))
-                                      
+        elif self.percent <= 80 and self.percent > 30:
+            self.loadbar.append(LabelNode(text = str(self.percent) + '%',
+                                      position = (self.screen_center_x, self.bar),
+                                      color = '#faca1d',
+                                      font = ('CopperPlate-Bold', 18),
+                                      parent = self))
+        else:
+            self.loadbar.append(LabelNode(text = str(self.percent) + '%',
+                                      position = (self.screen_center_x, self.bar),
+                                      color = '#00f215',
+                                      font = ('CopperPlate-Bold', 18),
+                                      parent = self))
     def touch_began(self, touch):
         # this method is called, when user touches the screen
         pass
@@ -130,6 +142,3 @@ class SplashScene(Scene):
         # this method is called, when user place app from background 
         # back into use. Reload anything you might need.
         pass
-    
-        
-        
