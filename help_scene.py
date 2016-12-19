@@ -36,6 +36,11 @@ class HelpScene(Scene):
                                        scale = 0.17,
                                        color = 'grey')
                                        
+        self.help_text = LabelNode(text = 'Welcome to Hit & Run\nHow To Play:\nPress Run to begin, \nthen you "spam tap" the screen, \nto hit mobs away; each mob you \nkill grants you coins, \nwhich you can use to buy \nweapons, armor, or potions.',
+                                   font=('Markerfelt-Wide', 25),
+                                   parent = self,
+                                   position = (self.size_of_screen_x - 384, self.size_of_screen_y - 512),
+                                   color = '#d92e2e')
     def update(self):
         # this method is called, hopefully, 60 times a second
         
