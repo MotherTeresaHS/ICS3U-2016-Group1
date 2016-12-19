@@ -36,6 +36,11 @@ class CreditsScene(Scene):
                                        scale = 0.17,
                                        color = 'grey')
                                        
+        self.credits_text = LabelNode(text = 'Made by Tristan A. Justin D. and Kyle B.\nImages from ... and created by Justin D.\nMade in Mr. Coxalls class\nGame Scene, Stats, Globals made by Tristan A.\nShop Scene, Sprites, Gifs made by Justin D.\nClasses, Credits, Help, Settings made by Kyle B.',
+                                      font = ('Markerfelt-Wide', 30),
+                                      parent = self,
+                                      position = (self.size_of_screen_x - 384, self.size_of_screen_y - 512),
+                                      color = '#d92e2e')
     def update(self):
         # this method is called, hopefully, 60 times a second
         
