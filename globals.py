@@ -26,3 +26,7 @@ class Globals():
     #coins
     global coins
     coins = 0
+    
+    #charaterstate
+    global currentstate
+    currentstate = 'run'
