@@ -32,7 +32,7 @@ class SplashScene(Scene):
                                      position = self.size / 2,
                                      parent = self,
                                      size = self.size,
-                                     scale = 1.15)
+                                     scale = 1.25)
                                      
         self.game_label = LabelNode(text = 'HIT & RUN',
                                     font=('CopperPlate-Bold', 80),
@@ -76,16 +76,17 @@ class SplashScene(Scene):
         self.fulltimee = 380
         self.bar = self.screen_center_y - 15
         self.loadmaxpixels = 380
-        self.pixels = int(self.loadmaxpixels * self.timee) / int(self.fulltimee)
+        self.pixels = self.loadmaxpixels * self.timee / self.fulltimee
         self.offset = (self.loadmaxpixels - self.pixels) / 2
         self.percent = (self.timee * 100) / self.fulltimee
         
-        
+        if self.pixels < 0:
+            self.pixels = 0
                               
         if self.timee >= 380:
             if not self.presented_scene and time.time() - self.start_time > 3:
                self.dismiss_modal_scene()
-               self.present_modal_scene(GamePick())
+               self.present_modal_scene(MainMenuScene())
         else:
            self.timee = self.timee + random.randint(2,2)
            for loadingbar in self.loadbar:
@@ -96,8 +97,7 @@ class SplashScene(Scene):
         self.loadbar.append(SpriteNode('./assets/sprites/splash/loadbar.PNG', 
                               position = (self.screen_center_x - self.offset, self.bar),
                               parent = self,
-                              scale = 1,
-                              size = (int(self.pixels), 25)))
+                              size = (self.pixels, 25)))
                               
         if self.percent <= 30:
             self.loadbar.append(LabelNode(text = str(self.percent) + '%',

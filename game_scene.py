@@ -20,7 +20,9 @@ class GameScene(Scene):
         self.screen_center_y = self.size_of_screen_y/2
         self.fixed_time_step = 'Nill'
         self.hud = []
+        self.bard = []
         self.monsters = []
+        self.dmglabels = []
         self.monster_attack_speed = 20.0
         self.monster_attack_rate = 5.0
         self.health = globals.fullhealth
@@ -31,6 +33,7 @@ class GameScene(Scene):
         self.rotationc = 0
         self.runspeed = 1
         self.swingspeed = 1
+        self.timerdmglabel = 0
         #---------------------------------
         self.start_time = time.time()
         
@@ -53,6 +56,12 @@ class GameScene(Scene):
                    scale = 1.25,
                    color = '#bababa',
                    alpha = 0.0)
+        self.interact_monsters = SpriteNode(position = (self.screen_center_x, 280),
+                   size = (200, 50),
+                   parent = self,
+                   scale = 1,
+                   color = '#bababa',
+                   alpha = 0.0)
     def touch_ended(self, touch):
         # this method is called, when user releases a finger from the screen
         if self.hit_button.frame.contains_point(touch.location):
@@ -60,14 +69,6 @@ class GameScene(Scene):
             self.rotationc = 1 
         if self.pause_button.frame.contains_point(touch.location):
             self.present_modal_scene(GameScenePause())
-       # if self.stand.frame.contains_point(touch.location):
-      #      self.currentstate = 'stand'
-       #     self.rotationc = 1
-        #if self.fight.frame.contains_point(touch.location):
-         #   self.currentstate = 'fight'
-       # if self.run.frame.contains_point(touch.location):
-          #  self.currentstate = 'run'
-        #    self.rotationc = 1
     
     def update(self):
         # this method is called, hopefully, 60 times a second
@@ -78,17 +79,35 @@ class GameScene(Scene):
         if monster_create_chance <= self.monster_attack_rate:
             self.add_monster()
         
+
+        
+        
+        
         #Hud
         for huds in self.hud:
                 huds.remove_from_parent()
                 self.hud.remove(huds)
         
+        for barc in self.bard:
+                barc.remove_from_parent()
+                self.bard.remove(barc)
+        
+        self.fullhp = globals.fullhealth
         self.bar = 50
-        self.bartop = self.size_of_screen_y - 50
         self.healthmaxpixels = 300
-        self.pixels = self.healthmaxpixels * globals.fullhealth / globals.fullhealth
-        self.offset = (self.healthmaxpixels - self.pixels) / 2
-        self.percent = globals.fullhealth * 100 / globals.fullhealth
+        self.pixels = int(self.healthmaxpixels * self.health / self.fullhp)
+        self.offset = int((self.healthmaxpixels - self.pixels) / 2)
+        self.percent = (self.health * 100) / self.fullhp
+        
+       
+        self.bartop = self.size_of_screen_y - 50
+        
+        self.soulpixels = self.healthmaxpixels * globals.fullhealth / globals.fullhealth
+        
+        self.souloffset = (self.healthmaxpixels - self.soulpixels) / 2
+        
+        #print('HP= ' + str(self.health) + ' / ' + str(globals.fullhealth) + ' : PX= ' + str(self.healthmaxpixels) + ' - ' + str(self.pixels) + ' = ' + str((self.healthmaxpixels - self.pixels)) + ' : Pos= ' + str(self.screen_center_x) + ' - ' + str(self.offset) + ' = ' + str((self.screen_center_x - self.offset)) + ' (' + str((self.screen_center_x - self.offset - (self.pixels /2))) + '-' + str((self.screen_center_x - self.offset + (self.pixels /2))) + ')')
+        
         
         self.hud.append(SpriteNode('./assets/sprites/game/emptybar.JPG', 
                               position = (self.screen_center_x, self.bar),
@@ -107,7 +126,7 @@ class GameScene(Scene):
                               scale = 1.25,
                               size = (15, 38)))
                               
-        self.hud.append(SpriteNode('./assets/sprites/game/health.PNG', 
+        self.bard.append(SpriteNode('./assets/sprites/game/health.PNG', 
                               position = (self.screen_center_x - self.offset, self.bar),
                               parent = self,
                               scale = 1.25,
@@ -115,7 +134,7 @@ class GameScene(Scene):
                               size = (self.pixels, 25)))
                               
         self.hud.append(LabelNode(text = '[' + str(self.health) + ' | ' + str(globals.fullhealth) + '] ' + str(self.percent) + '%',
-                                      position = (self.screen_center_x - self.offset, self.bar + 2),
+                                      position = (self.screen_center_x, 52),
                                       color = '#000000',
                                       font = ('CopperPlate-Bold', 18),
                                       parent = self))
@@ -130,13 +149,13 @@ class GameScene(Scene):
                                     font=('CopperPlate-Bold', 20),
                                     parent = self,
                                     position = (self.screen_center_x, self.size_of_screen_y - 90),
-                                    color = 'black'))
+                                    color = '#d2a710'))
                                     
         self.hud.append(LabelNode(text = 'Coins ' + str(self.currentcoins),
                                     font=('CopperPlate-Bold', 20),
                                     parent = self,
                                     position = (self.screen_center_x, self.size_of_screen_y - 110),
-                                    color = 'black'))
+                                    color = '#d2a710'))
                                     
         self.hud.append(SpriteNode('./assets/sprites/game/emptybar.JPG', 
                               position = (self.screen_center_x, self.bartop),
@@ -155,12 +174,12 @@ class GameScene(Scene):
                               scale = 1.25,
                               size = (15, 38)))
         
-        self.hud.append(SpriteNode('./assets/sprites/splash/loadbar.PNG', 
-                              position = (self.screen_center_x - self.offset, self.bartop),
+        self.bard.append(SpriteNode('./assets/sprites/splash/loadbar.PNG', 
+                              position = (self.screen_center_x - self.souloffset, self.bartop),
                               parent = self,
                               scale = 1.25,
                               color = '#5effea',
-                              size = (self.pixels, 25)))
+                              size = (self.soulpixels, 25)))
         
         self.hud.append(LabelNode(text = 'Round ' + str(self.currentround),
                                     font=('CopperPlate-Bold', 20),
@@ -286,9 +305,27 @@ class GameScene(Scene):
                                      scale = self.characterscale,
                                      parent = self))
         
-        self.rotationc = self.rotationc + 1
+        if self.timerdmglabel >= 10:
+            self.timerdmglabel = 0
+            for dmglabel in self.dmglabels:
+                dmglabel.remove_from_parent()
+                self.dmglabels.remove(dmglabel)
                 
-        
+        self.rotationc = self.rotationc + 1
+        self.timerdmglabel = self.timerdmglabel + 1
+        for monster in self.monsters:
+            if monster.frame.intersects(self.interact_monsters.frame) or monster.position.y == 280:
+                if globals.currentstate == 'attack' and self.rotationc == 5:
+                    self.dmglabels.append(LabelNode(text = str(random.randint(globals.playerdmglowest, globals.playerdmghighest)),
+                                      position = (self.screen_center_x - random.randint(1, 100) + random.randint(1, 100), 300 + random.randint(1, 25) - random.randint(1, 25)),
+                                      color = '#ac0000',
+                                      font = ('AvenirNext-Heavy', 25),
+                                      parent = self))
+                    monster.remove_from_parent()
+                    self.monsters.remove(monster)
+                    self.currentkills = self.currentkills + 1
+                    self.currentcoins = self.currentcoins + random.randint(3,10)
+                    
     def touch_began(self, touch):
         # this method is called, when user touches the screen
         pass
@@ -326,8 +363,8 @@ class GameScene(Scene):
         monster_start_position.y = self.size_of_screen_y + 100
         
         monster_end_position = Vector2()
-        monster_end_position.x = self.screen_center_x
-        monster_end_position.y = 300
+        monster_end_position.x = self.screen_center_x - 50 + random.randint(0, 100)
+        monster_end_position.y = 280
         
         self.monsters.append(SpriteNode('./assets/sprites/game/straightreaper.PNG',
                              position = monster_start_position,
