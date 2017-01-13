@@ -19,6 +19,7 @@ class HelpScene(Scene):
         self.background = SpriteNode('./assets/sprites/background.JPG', 
                                      position = self.size / 2,
                                      parent = self,
+                                     size = self.size,
                                      scale = 1.25)
                                      
         self.game_label = LabelNode(text = 'Help',
@@ -59,6 +60,7 @@ class HelpScene(Scene):
         # this method is called, when user releases a finger from the screen
         if self.back_button.frame.contains_point(touch.location):
             self.dismiss_modal_scene()
+            sound.play_effect('./assets/sounds/Chop.caf')
     
     def did_change_size(self):
         # this method is called, when user changes the orientation of the screen
