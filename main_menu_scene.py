@@ -94,16 +94,16 @@ class MainMenuScene(Scene):
                                      position = (self.size_of_screen_x - 100, self.size_of_screen_y - 300),
                                      color = 'grey')
                                      
-        self.smoke_settings = SpriteNode('assets/sprites/smoke/BlackSmoke09.png', 
-                                     position = (100, self.size_of_screen_y - 200),
-                                     parent = self,
-                                     scale = 1.25)
-                                     
-        self.settings_label = SpriteNode('assets/sprites/gearw.PNG', 
-                                     position = (100, self.size_of_screen_y - 200),
-                                     parent = self,
-                                     scale = 0.17,
-                                     color = 'grey')
+#        self.smoke_settings = SpriteNode('assets/sprites/smoke/BlackSmoke09.png', 
+#                                     position = (100, self.size_of_screen_y - 200),
+#                                     parent = self,
+#                                     scale = 1.25)
+#                                     
+#        self.settings_label = SpriteNode('assets/sprites/gearw.PNG', 
+#                                     position = (100, self.size_of_screen_y - 200),
+#                                     parent = self,
+#                                     scale = 0.17,
+#                                     color = 'grey')
                                      
         
         
@@ -147,12 +147,12 @@ class MainMenuScene(Scene):
             self.start_time = time.time()
             self.present_modal_scene(HitAndRunShopScene())
             sound.play_effect('./assets/sounds/Chop.caf')
-        if self.settings_label.frame.contains_point(touch.location):
-            self.settings_label_down = True
+#        if self.settings_label.frame.contains_point(touch.location):
+#            self.settings_label_down = True
            
-            self.start_time = time.time()
-            self.present_modal_scene(SettingsScene())
-            sound.play_effect('./assets/sounds/Chop.caf')
+#            self.start_time = time.time()
+#            self.present_modal_scene(SettingsScene())
+#            sound.play_effect('./assets/sounds/Chop.caf')
         if self.run_label.frame.contains_point(touch.location):
             self.run_label_down = True
             
