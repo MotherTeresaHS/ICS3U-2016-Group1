@@ -3,11 +3,14 @@
 # Created for: ICS3U
 # This scene shows the main menu.
 
+#
+
 from scene import *
 
 import time
 import ui
-
+import sound
+import globals 
 from stats_scene import *
 from credits_scene import *
 from shop_scene import *
@@ -17,7 +20,7 @@ from settings_scene import *
 
 class MainMenuScene(Scene):
     def setup(self):
-        shop = HitAndRunShopScene()
+        self.coinss = []
         self.run_label_down = False
         self.help_label_down = False
         self.settings_label_down = False
@@ -34,6 +37,7 @@ class MainMenuScene(Scene):
         self.background = SpriteNode('./assets/sprites/background.JPG', 
                                      position = self.size / 2,
                                      parent = self,
+                                     size = self.size,
                                      scale = 1.25)
                                      
         self.smoke_run = SpriteNode('assets/sprites/smoke/BlackSmoke18.png', 
@@ -101,15 +105,22 @@ class MainMenuScene(Scene):
                                      scale = 0.17,
                                      color = 'grey')
                                      
-        self.coins_label = LabelNode(text = 'Coins - ' + str(shop.get_coins()),
-                                     font=('CopperPlate-Light', 30),
-                                     parent = self,
-                                     position = (self.screen_center_x, self.size_of_screen_y - 50),
-                                     color = 'gold')
+        
         
     def update(self):
         # this method is called, hopefully, 60 times a second
-        pass
+        # after 2 seconds, move to main menu scene
+        
+        
+        
+        for displaycoins in self.coinss:
+            displaycoins.remove_from_parent()
+            self.coinss.remove(displaycoins)
+        self.coinss.append(LabelNode(text = 'Coins - ' + str(globals.coins),
+                                     font=('CopperPlate-Light', 30),
+                                     parent = self,
+                                     position = (self.screen_center_x, self.size_of_screen_y - 50),
+                                     color = 'gold'))
     
     def touch_began(self, touch):
         # this method is called, when user touches the screen
@@ -129,31 +140,37 @@ class MainMenuScene(Scene):
             
             self.start_time = time.time()
             self.present_modal_scene(StatsScene())
+            sound.play_effect('./assets/sounds/Chop.caf')
         if self.shop_label.frame.contains_point(touch.location):
             self.shop_label_down = True
             
             self.start_time = time.time()
             self.present_modal_scene(HitAndRunShopScene())
+            sound.play_effect('./assets/sounds/Chop.caf')
         if self.settings_label.frame.contains_point(touch.location):
             self.settings_label_down = True
            
             self.start_time = time.time()
             self.present_modal_scene(SettingsScene())
+            sound.play_effect('./assets/sounds/Chop.caf')
         if self.run_label.frame.contains_point(touch.location):
             self.run_label_down = True
             
             self.start_time = time.time()
             self.present_modal_scene(GameScene())
+            sound.play_effect('./assets/sounds/Chop.caf')
         if self.credits_label.frame.contains_point(touch.location):
             self.credits_label_down = True
             
             self.start_time = time.time()
             self.present_modal_scene(CreditsScene())
+            sound.play_effect('./assets/sounds/Chop.caf')
         if self.help_label.frame.contains_point(touch.location):
             self.help_label_down = True
             
             self.start_time = time.time()
             self.present_modal_scene(HelpScene())
+            sound.play_effect('./assets/sounds/Chop.caf')
     
     def did_change_size(self):
         # this method is called, when user changes the orientation of the screen
@@ -170,3 +187,5 @@ class MainMenuScene(Scene):
         # back into use. Reload anything you might need.
         pass
     
+    
+        
