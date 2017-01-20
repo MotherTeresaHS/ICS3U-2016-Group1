@@ -17,6 +17,7 @@
 #
 # To exit the app in Pythonista, pull down with 2 fingers.
 #I added another line - Tristan
+#I added sounds, setting scene, help scene, and credits scene. - Kyle
 
 from scene import *
 import ui
