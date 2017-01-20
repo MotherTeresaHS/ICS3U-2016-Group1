@@ -5,7 +5,6 @@ import ui
 import random
 
 import globals
-from game_scene_pause import *
 
 
 class GameScene(Scene):
@@ -266,9 +265,6 @@ class GameScene(Scene):
         if self.health <= 0:
             self.health = globals.fullhealth + 1
             self.state = 'dead'
-            for monster in self.monsters:
-                monster.remove_from_parent()
-                self.monsters.remove(monster)
             globals.coins = globals.coins + self.currentcoins
             self.removescene = time.time()
             if time.time() - self.removescene > 3:
@@ -284,13 +280,6 @@ class GameScene(Scene):
                                        scale = 1.25,
                                        color = '#a50000',
                                        font = ('CopperPlate-Light', 60))
-            for monster in self.monsters:
-                monster.remove_from_parent()
-                self.monsters.remove(monster)
-            for monster in self.monsters:
-                monster.remove_from_parent()
-                self.monsters.remove(monster)
-                
         if time.time() - self.regentime >= 5 and globals.fullhealth - self.health >= globals.overtimeregen and self.health != 0:
             self.regentime = time.time()
             self.health = self.health + globals.overtimeregen
@@ -419,10 +408,12 @@ class GameScene(Scene):
                         self.armor = 0
                         self.armorchancerole = 1000
                     if not self.armorchancerole <= self.armor:
-                        self.health = self.health - random.randint(0,1 + round(self.currentround / 2))
+                        if self.health != globals.fullhealth + 1:
+                            self.health = self.health - random.randint(0,1 + round(self.currentround / 2))
                     else:
-                        self.currentarmor = self.currentarmor - 1
-                        self.blocklabels.append(LabelNode(text = 'BLOCK',
+                        if self.health != globals.fullhealth + 1:
+                            self.currentarmor = self.currentarmor - 1
+                            self.blocklabels.append(LabelNode(text = 'BLOCK',
                                       position = (self.screen_center_x - random.randint(1, 100) + random.randint(1, 100), 250 - random.randint(1,50) + random.randint(1,50)),
                                       color = '#d3cccc',
                                       alpha = 1.0,
@@ -440,10 +431,12 @@ class GameScene(Scene):
                         self.armor = 0
                         self.armorchancerole = 1000
                     if not self.armorchancerole <= self.armor:
-                        self.health = self.health - random.randint(0,1 + round(self.currentround / 2))
+                        if self.health != globals.fullhealth + 1:
+                            self.health = self.health - random.randint(0,1 + round(self.currentround / 2))
                     else:
-                        self.currentarmor = self.currentarmor - 1
-                        self.blocklabels.append(LabelNode(text = 'BLOCK',
+                        if self.health != globals.fullhealth + 1:
+                            self.currentarmor = self.currentarmor - 1
+                            self.blocklabels.append(LabelNode(text = 'BLOCK',
                                       position = (self.screen_center_x - random.randint(1, 100) + random.randint(1, 100), 250 - random.randint(1,50) + random.randint(1,50)),
                                       color = '#d3cccc',
                                       alpha = 1.0,
