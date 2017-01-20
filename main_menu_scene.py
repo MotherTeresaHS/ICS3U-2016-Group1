@@ -3,24 +3,19 @@
 # Created for: ICS3U
 # This scene shows the main menu.
 
-#
-
 from scene import *
 
 import time
 import ui
-import sound
-import globals 
+
 from stats_scene import *
 from credits_scene import *
 from shop_scene import *
 from help_scene import *
 from game_scene import *
-from settings_scene import *
 
 class MainMenuScene(Scene):
     def setup(self):
-        self.coinss = []
         self.run_label_down = False
         self.help_label_down = False
         self.settings_label_down = False
@@ -32,12 +27,12 @@ class MainMenuScene(Scene):
         self.screen_center_x = self.size_of_screen_x/2
         self.screen_center_y = self.size_of_screen_y/2
         # this method is called, when user moves to this scene
-        
+        self.coinz = globals.coins
+        self.counter = 0
         # add MT blue background color
         self.background = SpriteNode('./assets/sprites/background.JPG', 
                                      position = self.size / 2,
                                      parent = self,
-                                     size = self.size,
                                      scale = 1.25)
                                      
         self.smoke_run = SpriteNode('assets/sprites/smoke/BlackSmoke18.png', 
@@ -94,33 +89,25 @@ class MainMenuScene(Scene):
                                      position = (self.size_of_screen_x - 100, self.size_of_screen_y - 300),
                                      color = 'grey')
                                      
-#        self.smoke_settings = SpriteNode('assets/sprites/smoke/BlackSmoke09.png', 
-#                                     position = (100, self.size_of_screen_y - 200),
-#                                     parent = self,
-#                                     scale = 1.25)
-#                                     
-#        self.settings_label = SpriteNode('assets/sprites/gearw.PNG', 
-#                                     position = (100, self.size_of_screen_y - 200),
-#                                     parent = self,
-#                                     scale = 0.17,
-#                                     color = 'grey')
-                                     
-        
+        self.coins_label = LabelNode(text = str(self.coinz),
+                                     font=('CopperPlate-Light', 30),
+                                     parent = self,
+                                     anchor_point = (0, 0.5),
+                                     position = (self.screen_center_x - 30, self.size_of_screen_y - 30),
+                                     color = 'gold')
+        self.coins_img = SpriteNode('assets/sprites/coins.PNG', 
+                                     position = (self.screen_center_x - 50, self.size_of_screen_y - 30),
+                                     parent = self,
+                                     scale = 0.06)
         
     def update(self):
         # this method is called, hopefully, 60 times a second
-        # after 2 seconds, move to main menu scene
+        self.counter = self.counter + 1
         
-        
-        
-        for displaycoins in self.coinss:
-            displaycoins.remove_from_parent()
-            self.coinss.remove(displaycoins)
-        self.coinss.append(LabelNode(text = 'Coins - ' + str(globals.coins),
-                                     font=('CopperPlate-Light', 30),
-                                     parent = self,
-                                     position = (self.screen_center_x, self.size_of_screen_y - 50),
-                                     color = 'gold'))
+        if self.counter >= 200:
+            self.counter = 0
+            self.coinz = globals.coins
+            self.coins_label.text = str(self.coinz)
     
     def touch_began(self, touch):
         # this method is called, when user touches the screen
@@ -140,37 +127,26 @@ class MainMenuScene(Scene):
             
             self.start_time = time.time()
             self.present_modal_scene(StatsScene())
-            sound.play_effect('./assets/sounds/Chop.caf')
         if self.shop_label.frame.contains_point(touch.location):
             self.shop_label_down = True
             
             self.start_time = time.time()
             self.present_modal_scene(HitAndRunShopScene())
-            sound.play_effect('./assets/sounds/Chop.caf')
-#        if self.settings_label.frame.contains_point(touch.location):
-#            self.settings_label_down = True
-           
-#            self.start_time = time.time()
-#            self.present_modal_scene(SettingsScene())
-#            sound.play_effect('./assets/sounds/Chop.caf')
         if self.run_label.frame.contains_point(touch.location):
             self.run_label_down = True
             
             self.start_time = time.time()
             self.present_modal_scene(GameScene())
-            sound.play_effect('./assets/sounds/Chop.caf')
         if self.credits_label.frame.contains_point(touch.location):
             self.credits_label_down = True
             
             self.start_time = time.time()
             self.present_modal_scene(CreditsScene())
-            sound.play_effect('./assets/sounds/Chop.caf')
         if self.help_label.frame.contains_point(touch.location):
             self.help_label_down = True
             
             self.start_time = time.time()
             self.present_modal_scene(HelpScene())
-            sound.play_effect('./assets/sounds/Chop.caf')
     
     def did_change_size(self):
         # this method is called, when user changes the orientation of the screen
@@ -187,5 +163,3 @@ class MainMenuScene(Scene):
         # back into use. Reload anything you might need.
         pass
     
-    
-        
