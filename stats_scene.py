@@ -2,7 +2,7 @@ from scene import *
 
 import time
 import ui
-import sound
+
 import globals
 class StatsScene(Scene):
     def setup(self):
@@ -74,7 +74,7 @@ class StatsScene(Scene):
         # this method is called, when user releases a finger from the screen
         if self.back_button.frame.contains_point(touch.location):
             self.dismiss_modal_scene()
-            sound.play_effect('./assets/sounds/Chop.caf')
+        
         
     def did_change_size(self):
         # this method is called, when user changes the orientation of the screen
