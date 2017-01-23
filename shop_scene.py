@@ -82,12 +82,12 @@ class HitAndRunShopScene(Scene):
                                      color = 'grey',
                                      scale = 0.65,
                                      position = (self.screen_center_x - self.screen_center_x/2, self.screen_center_y + self.screen_center_y/9.25))
-        self.critdamage_rune = SpriteNode('./assets/sprites/shop/runes/runeGrey_slab_019.png',
+        self.lifesteal_rune = SpriteNode('./assets/sprites/shop/runes/runeGrey_slab_019.png',
                                      parent = self,
                                      color = '#a4a4a4',
                                      scale = 0.65,
                                      position = (self.screen_center_x - self.screen_center_x/2, self.screen_center_y + self.screen_center_y/8.25))
-        self.critdamage_label = LabelNode(text = 'CRIT DAMAGE',
+        self.lifesteal_label = LabelNode(text = 'LIFESTEAL',
                                      font=('CopperPlate-Light', 12),
                                      parent = self,
                                      position = (self.screen_center_x - self.screen_center_x/2, self.screen_center_y + self.screen_center_y/24),
@@ -144,7 +144,7 @@ class HitAndRunShopScene(Scene):
                                      scale = 0.65,
                                      position = (self.screen_center_x, self.screen_center_y + self.screen_center_y/1.6))
         self.price1_label = LabelNode(text = str(globals.price1),
-                                     font=('CopperPlate-Light', 35),
+                                     font=('CopperPlate-Light', 25),
                                      parent = self,
                                      position = (self.screen_center_x, self.screen_center_y + self.screen_center_y/1.6),
                                      color = 'gold')
@@ -155,7 +155,7 @@ class HitAndRunShopScene(Scene):
                                      scale = 0.65,
                                      position = (self.screen_center_x, self.screen_center_y + self.screen_center_y/2.7))
         self.price2_label = LabelNode(text = str(globals.price2),
-                                     font=('CopperPlate-Light', 35),
+                                     font=('CopperPlate-Light', 25),
                                      parent = self,
                                      position = (self.screen_center_x, self.screen_center_y + self.screen_center_y/2.7),
                                      color = 'gold')
@@ -166,7 +166,7 @@ class HitAndRunShopScene(Scene):
                                      scale = 0.65,
                                      position = (self.screen_center_x, self.screen_center_y + self.screen_center_y/9.25))
         self.price3_label = LabelNode(text = str(globals.price3),
-                                     font=('CopperPlate-Light', 35),
+                                     font=('CopperPlate-Light', 25),
                                      parent = self,
                                      position = (self.screen_center_x, self.screen_center_y + self.screen_center_y/9.25),
                                      color = 'gold')
@@ -177,7 +177,7 @@ class HitAndRunShopScene(Scene):
                                      scale = 0.65,
                                      position = (self.screen_center_x, self.screen_center_y - self.screen_center_y/6.5))
         self.price4_label = LabelNode(text = str(globals.price4),
-                                     font=('CopperPlate-Light', 35),
+                                     font=('CopperPlate-Light', 25),
                                      parent = self,
                                      position = (self.screen_center_x, self.screen_center_y - self.screen_center_y/6.5),
                                      color = 'gold')
@@ -188,7 +188,7 @@ class HitAndRunShopScene(Scene):
                                      scale = 0.65,
                                      position = (self.screen_center_x, self.screen_center_y - self.screen_center_y/2.4))
         self.price5_label = LabelNode(text = str(globals.price5),
-                                     font=('CopperPlate-Light', 35),
+                                     font=('CopperPlate-Light', 25),
                                      parent = self,
                                      position = (self.screen_center_x, self.screen_center_y - self.screen_center_y/2.4),
                                      color = 'gold')
@@ -199,7 +199,7 @@ class HitAndRunShopScene(Scene):
                                      scale = 0.65,
                                      position = (self.screen_center_x, self.screen_center_y - self.screen_center_y/1.465))
         self.price6_label = LabelNode(text = str(globals.price6),
-                                     font=('CopperPlate-Light', 35),
+                                     font=('CopperPlate-Light', 25),
                                      parent = self,
                                      position = (self.screen_center_x, self.screen_center_y - self.screen_center_y/1.465),
                                      color = 'gold')
@@ -283,18 +283,29 @@ class HitAndRunShopScene(Scene):
             self.coinz = globals.coins
             self.coins_label.text = str(self.coinz)
         # after 2 seconds, move to main menu scene
-        self.price1_label.text = str(globals.price1)
-        self.price2_label.text = str(globals.price2)
-        self.price3_label.text = str(globals.price3)
-        self.price4_label.text = str(globals.price4)
-        self.price5_label.text = str(globals.price5)
-        self.price6_label.text = str(globals.price6)
+        self.price1_label.text = str(globals.price1) + '\n Lv' + str(globals.lv1)
+        self.price2_label.text = str(globals.price2) + '\n Lv' + str(globals.lv2)
+        self.price3_label.text = str(globals.price3) + '\n Lv' + str(globals.lv3)
+        self.price4_label.text = str(globals.price4) + '\n Lv' + str(globals.lv4)
+        
+        if self.maxedarmor == 1:
+            self.price5_label.text = 'Maxed'
+            self.price5_label.color = 'red'
+        else:
+            self.price5_label.text = str(globals.price5) + '\n Lv' + str(globals.lv5)
+        
+        if self.maxedatk == 1:
+            self.price6_label.text = 'Maxed'
+            self.price6_label.color = 'red'
+        else:
+            self.price6_label.text = str(globals.price6) + '\n Lv' + str(globals.lv6)
+        
         if globals.playeratkspeed <= 0.1:
             globals.playeratkspeed = 0.1
-            self.maxedarmor = 1
-        if globals.playerarmor >= 86:
-            globals.playeratkspeed = 100
             self.maxedatk = 1
+        if globals.playerarmor >= 90:
+            globals.playerarmor = 90
+            self.maxedarmor = 1
     def touch_began(self, touch):
         # this method is called, when user touches the screen
         pass
@@ -313,8 +324,9 @@ class HitAndRunShopScene(Scene):
             if globals.coins >= globals.price1:
                 self.counter = 500
                 globals.coins = globals.coins - globals.price1
-                globals.price1 = globals.price1*2
-                globals.fullhealth = int(round(globals.fullhealth*1.5))
+                globals.lv1 = globals.lv1 + 1
+                globals.price1 = int(round(globals.price1*1.3))
+                globals.fullhealth = int(round(globals.fullhealth*1.25))
             else:
                 pass
              
@@ -323,9 +335,10 @@ class HitAndRunShopScene(Scene):
             if globals.coins >= globals.price2:
                 self.counter = 500
                 globals.coins = globals.coins - globals.price2
-                globals.price2 = globals.price2*2
-                globals.playerdmglowest = int(round(globals.playerdmglowest*1.5))
-                globals.playerdmghighest = int(round(globals.playerdmghighest*1.5))
+                globals.lv2 = globals.lv2 + 1
+                globals.price2 = int(round(globals.price2*1.3))
+                globals.playerdmglowest = int(round(globals.playerdmglowest*1.25))
+                globals.playerdmghighest = int(round(globals.playerdmghighest*1.25))
             else:
                 pass
             
@@ -334,8 +347,9 @@ class HitAndRunShopScene(Scene):
             if globals.coins >= globals.price3:
                 self.counter = 500
                 globals.coins = globals.coins - globals.price3
-                globals.price3 = globals.price3*2
-                globals.playercritdmg = int(round(globals.playercritdmg*1.5))
+                globals.lv3 = globals.lv3 + 1
+                globals.price3 = int(round(globals.price3*1.3))
+                globals.playerlifesteal = int(round((globals.playerlifesteal + 1) * 1.1))
             else:
                 pass
             
@@ -344,8 +358,9 @@ class HitAndRunShopScene(Scene):
             if globals.coins >= globals.price4:
                 self.counter = 500
                 globals.coins = globals.coins - globals.price4
-                globals.price4 = globals.price4*2
-                globals.overtimeregen = int(round(globals.overtimeregen*1.5))
+                globals.lv4 = globals.lv4 + 1
+                globals.price4 = int(round(globals.price4*1.3))
+                globals.overtimeregen = int(round(globals.overtimeregen*1.25))
                 
             else:
                 pass
@@ -356,8 +371,9 @@ class HitAndRunShopScene(Scene):
                 if globals.coins >= globals.price5:
                     self.counter = 500
                     globals.coins = globals.coins - globals.price5
-                    globals.price5 = globals.price5*2
-                    globals.playerarmor = int(round(globals.playerarmor*1.2))
+                    globals.lv5 = globals.lv5 + 1
+                    globals.price5 = int(round(globals.price5*2))
+                    globals.playerarmor = int(round(globals.playerarmor*1.25))
                 else:
                     pass
             
@@ -367,7 +383,8 @@ class HitAndRunShopScene(Scene):
                 if globals.coins >= globals.price6:
                     self.counter = 500
                     globals.coins = globals.coins - globals.price6
-                    globals.price6 = globals.price6*2
+                    globals.lv6 = globals.lv6 + 1
+                    globals.price6 = int(round(globals.price6 *2))
                     globals.playeratkspeed = (globals.playeratkspeed - 0.1)
                 else:
                     pass

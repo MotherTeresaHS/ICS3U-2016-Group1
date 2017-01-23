@@ -17,10 +17,9 @@ class StatsScene(Scene):
         self.start_time = time.time()
         
         # add MT blue background color
-        self.background = SpriteNode('./assets/sprites/background.JPG', 
-                                     position = (self.screen_center_x, self.screen_center_y),
+        self.background = SpriteNode('assets/sprites/background.JPG', 
+                                     position = self.size / 2,
                                      parent = self,
-                                     size = self.size,
                                      scale = 1.25)
                                      
         
@@ -31,16 +30,16 @@ class StatsScene(Scene):
                                      position = (self.size_of_screen_x - 55, self.size_of_screen_y - 40),
                                      color = 'grey')
                                      
-        self.labels = LabelNode(text = 'HEALTH\nDAMAGE\nCRIT DAMAGE\nCRIT CHANCE\nREGEN\nARMOR\nATTACK SPEED',
-                                     font=('CopperPlate-Light', 40),
+        self.labels = LabelNode(text = 'HEALTH\nDAMAGE\nCRIT DAMAGE\nCRIT CHANCE\nREGEN\nARMOR\nATTACK SPEED\nLIFESTEAL\nAMOUNT OF BLOCKS',
+                                     font=('CopperPlate-Light', 20),
                                      parent = self,
-                                     position = (200, self.screen_center_y),
+                                     position = (150, self.screen_center_y),
                                      color = 'grey')
                                      
                                      
                                      
-        self.stat_labels = LabelNode(text=str(globals.fullhealth) + 'hp\n' + str(globals.playerdmglowest) + '-' + str(globals.playerdmghighest) + 'dmg\n' + str(globals.playercritdmg) + '%\n' + str(globals.playercritchance) + '%\n' + str(globals.overtimeregen) + 'hp /5s\n' + str(globals.playerarmor) + '%\n' + str(globals.playeratkspeed) + 's',
-                            font = ('CopperPlate-Light', 40),
+        self.stat_labels = LabelNode(text=str(globals.fullhealth) + 'hp\n' + str(globals.playerdmglowest) + '-' + str(globals.playerdmghighest) + 'dmg\n' + str(globals.playercritdmg) + '%\n' + str(globals.playercritchance) + '%\n' + str(globals.overtimeregen) + 'hp /3s\n' + str(globals.playerarmor) + '%\n' + str(globals.playeratkspeed) + 's\n' + str(globals.playerlifesteal) + 'hp /Kill\n' + '100',
+                            font = ('CopperPlate-Light', 20),
                             parent = self,
                             position = (self.size_of_screen_x - 250, self.screen_center_y),
                             color = '#c53434')

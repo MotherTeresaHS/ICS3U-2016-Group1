@@ -18,6 +18,7 @@ class GameScene(Scene):
         self.fixed_time_step = 'Nill'
         #Stats and counters
         self.currentkills = 0
+        self.default = 'stand'
         self.currentround = 1
         self.currentcoins = 0
         self.runspeed = 2
@@ -41,13 +42,18 @@ class GameScene(Scene):
         self.timerblock = 0
         self.crit = globals.playercritchance
         self.stopwatch = 0
+        self.timersteal = 0
+        self.monsterbatattack = 0
+        self.monsterbatrotation = 0
         #Lists
         self.monsters = []
+        self.monstersbat = []
         self.dmglabels = []
         self.roundup = []
         self.regenover5 = []
         self.blocklabels = []
-        self.dead = []
+        self.lifesteal = []
+        self.monsterhp = []
         self.dea = 0
         #Times
         self.currenttimeh = time.time()
@@ -80,6 +86,26 @@ class GameScene(Scene):
                                      parent = self,
                                      size = self.size,
                                      scale = 2)
+        self.tree1 = SpriteNode('./assets/sprites/tree.PNG', 
+                                     position = (self.screen_center_x + 200, self.screen_center_y + 300),
+                                     parent = self,
+                                     color = '#dadada',
+                                     scale = 1)
+        self.tree2 = SpriteNode('./assets/sprites/tree.PNG', 
+                                     position = (self.screen_center_x - 265, self.screen_center_y - 120),
+                                     parent = self,
+                                     color = '#dadada',
+                                     scale = 1)
+        self.tree3 = SpriteNode('./assets/sprites/tree.PNG', 
+                                     position = (self.screen_center_x + 150, self.screen_center_y - 300),
+                                     parent = self,
+                                     color = '#dadada',
+                                     scale = 1)
+        self.rock1 = SpriteNode('./assets/sprites/rock.PNG', 
+                                     position = (self.screen_center_x - 50, self.screen_center_y + 90),
+                                     parent = self,
+                                     color = '#dadada',
+                                     scale = 1.5)
         
         self.attackback = (SpriteNode('./assets/sprites/game/updownpipe.PNG', 
                                       position = (self.atbar, 300),
@@ -178,6 +204,13 @@ class GameScene(Scene):
                                      parent = self,
                                      scale = 0.11)
                                      
+        self.roundlab = (LabelNode(text = str(self.currentround),
+                                     font = ('AvenirNext-Heavy', 80),
+                                     parent = self,
+                                     color = '#000000',
+                                     anchor_point = (0, 0.5),
+                                     position = (self.sbar, self.size_of_screen_y - 100)))
+                                     
         self.coinslabel = (LabelNode(text = str(self.currentcoins),
                                      font = ('CopperPlate-Bold', 25),
                                      parent = self,
@@ -255,9 +288,16 @@ class GameScene(Scene):
         
         self.timerroundup = self.timerroundup + 1
         self.timerblock = self.timerblock + 1
+        self.timersteal = self.timersteal + 1
         self.rotationc = self.rotationc + 1
         self.monsterattack = self.monsterattack + 1
         self.timerregen = self.timerregen + 1
+        self.roundlab.text = str(self.currentround)
+        self.monsterbatattack = self.monsterbatattack + 1
+        self.monsterbatrotation = self.monsterbatrotation + 1
+        
+        if self.state != 'dead' and self.health > globals.fullhealth:
+            self.health = globals.fullhealth
         
         if self.dea == 0:
             self.timelabel.text = str((int(time.time() - self.runtime) * 100) / 100) + 's'
@@ -265,6 +305,8 @@ class GameScene(Scene):
         if self.health <= 0:
             self.health = globals.fullhealth + 1
             self.state = 'dead'
+            self.dea = 1
+            self.monsterspawned = self.roundkills 
             globals.coins = globals.coins + self.currentcoins
             self.removescene = time.time()
             if time.time() - self.removescene > 3:
@@ -280,7 +322,7 @@ class GameScene(Scene):
                                        scale = 1.25,
                                        color = '#a50000',
                                        font = ('CopperPlate-Light', 60))
-        if time.time() - self.regentime >= 5 and globals.fullhealth - self.health >= globals.overtimeregen and self.health != 0:
+        if time.time() - self.regentime >= 3 and globals.fullhealth - self.health >= globals.overtimeregen and self.health != 0:
             self.regentime = time.time()
             self.health = self.health + globals.overtimeregen
             self.regenover5.append(LabelNode(text = '+' + str(globals.overtimeregen),
@@ -289,10 +331,21 @@ class GameScene(Scene):
                                       alpha = 1.0,
                                       font = ('AvenirNext-Heavy', 25),
                                       parent = self))
-        
+                                      
+        #if self.currentround == 20:
+           # self.monster_attack_rate = 0
+           # self.state = 'run'
+           # self.charater.run_action(Action.move_to(self.charater.position.x, self.screen_center_y + 50, 4))
+            #if self.charater.position.y >= self.screen_center_y + 40:
+             #   self.state = 'stand'
         if self.currentroundkills == self.roundkills:
-            self.state = 'run'
+            self.state = 'stand'
+            self.currentarmor = self.currentarmor + 1
             self.currentround = self.currentround + 1
+            if self.monster_attack_rate < 90.0:
+                self.monster_attack_rate = self.monster_attack_rate + 1.0
+            if self.monster_attack_speed > 5.0:
+                self.monster_attack_speed = self.monster_attack_speed - 0.1
             self.currentroundkills = 0
             self.roundkills = self.currentround * 3
             self.monsterspawned = 0
@@ -314,6 +367,7 @@ class GameScene(Scene):
         #MonsterSpawn
         self.creationrate = random.randint(1, 120)
         if self.monsterspawned < self.roundkills and self.creationrate <= self.monster_attack_rate:
+            self.monstertype = random.randint(1,3)
             self.monsterspawned = self.monsterspawned + 1
             self.add_monster()
         
@@ -333,6 +387,14 @@ class GameScene(Scene):
                 armormove.remove_from_parent()
                 self.blocklabels.remove(armormove)
         
+        for lifesteals in self.lifesteal:
+            self.timersteal = 0
+            lifesteals.run_action(Action.fade_to(0,3))
+            lifesteals.run_action(Action.move_to(lifesteals.position.x, 150, 3))
+            if lifesteals.position.y <= 160:
+                lifesteals.remove_from_parent()
+                self.lifesteal.remove(lifesteals)
+                
         for regenovertime in self.regenover5:
             self.timerregen = 0
             regenovertime.run_action(Action.fade_to(0,3))
@@ -342,7 +404,7 @@ class GameScene(Scene):
                 self.regenover5.remove(regenovertime)
                 
         #CharaterActions
-        if self.state == 'attack':
+        if self.state == 'attack' and self.charater.position.y <= 280:
             
             self.charater.position = (self.screen_center_x, 210)
             if self.rotationc <= self.swingspeed:
@@ -360,7 +422,7 @@ class GameScene(Scene):
             elif self.rotationc > (self.swingspeed * 6):
                 self.charater.texture = Texture('./assets/sprites/game/swing6.PNG')
                 self.rotationc = 1
-                self.state = 'run'
+                self.state = 'stand'
                 
             self.waitattack = self.fullatk + time.time()
         elif self.state == 'run':
@@ -393,9 +455,9 @@ class GameScene(Scene):
             self.charater.position = (self.screen_center_x, 200)
             self.charater.texture = Texture('assets/sprites/game/dead.PNG')
 
-        
+        self.index = 0
         for monster in self.monsters:
-            if monster.position.y == 280:
+            if monster.position.y <= 290:
                 if self.monsterattack <= 50:
                      monster.position.y = 280
                      monster.texture = Texture('assets/sprites/game/straightreaper.PNG')
@@ -447,9 +509,14 @@ class GameScene(Scene):
                     self.monsterattack = 0
                     monster.texture = Texture('assets/sprites/game/straightreaper.PNG')
             if monster.position.y <= 310 and self.state == 'attack' and self.rotationc == 6:
-                self.currentkills = self.currentkills + 1
-                self.currentroundkills = self.currentroundkills + 1
-                self.currentcoins = self.currentcoins + random.randint((2 + self.currentround),(9 + self.currentround))
+                if self.health != globals.fullhealth and self.health - globals.playerlifesteal <= globals.fullhealth:
+                    self.health = self.health + globals.playerlifesteal
+                    self.lifesteal.append(LabelNode(text = '+' + str(globals.playerlifesteal),
+                                                    position = (self.screen_center_x - random.randint(1, 100) + random.randint(1, 100), 250 - random.randint(1,50) + random.randint(1,50)),
+                                      color = '#ff00c8',
+                                      alpha = 1.0,
+                                      font = ('AvenirNext-Heavy', 25),
+                                      parent = self))
                 self.critchanceroll = random.randint(self.crit, 100)
                 if self.critchanceroll <= self.crit:
                     self.dmglabels.append(LabelNode(text = str(random.randint(globals.playerdmglowest + globals.playerdmglowest*(globals.playercritdmg/100), globals.playerdmghighest + globals.playerdmghighest*(globals.playercritdmg/100))),
@@ -459,14 +526,23 @@ class GameScene(Scene):
                                       font = ('AvenirNext-Heavy', 30),
                                       parent = self))
                 else:
-                    self.dmglabels.append(LabelNode(text = str(random.randint(globals.playerdmglowest, globals.playerdmghighest)),
+                    self.dmg = random.randint(globals.playerdmglowest, globals.playerdmghighest)
+                    self.dmglabels.append(LabelNode(text = str(self.dmg),
                                       position = (self.screen_center_x - random.randint(1, 100) + random.randint(1, 100), 350 - random.randint(1,50) + random.randint(1,50)),
                                       color = '#ff0000',
                                       alpha = 1.0,
                                       font = ('AvenirNext-Heavy', 25),
                                       parent = self))
-                monster.remove_from_parent()
-                self.monsters.remove(monster)
+                    self.monsterhp[self.index] = (int(self.monsterhp[self.index]) - int(self.dmg))
+                    if self.monsterhp[self.index] <= 0:
+                        monster.remove_from_parent()
+                        self.monsters.remove(monster)
+                        self.currentkills = self.currentkills + 1
+                        self.currentroundkills = self.currentroundkills + 1
+                        self.currentcoins = self.currentcoins + random.randint((2 + self.currentround),(9 + self.currentround))
+                        self.monsterhp.pop(self.index)
+                    else:
+                        self.index = self.index + 1
         
     def touch_began(self, touch):
         # this method is called, when user touches the screen
@@ -492,13 +568,7 @@ class GameScene(Scene):
         # back into use. Reload anything you might need.
         pass
         
-        
-    #def screenscroll(self):
-        # add a new alien to come down
-        
     def add_monster(self):
-        # add a new alien to come down
-        
         monster_start_position = Vector2()
         monster_start_position.x = random.randint(100, 
                                          self.size_of_screen_x - 100)
@@ -508,12 +578,13 @@ class GameScene(Scene):
         monster_end_position.x = self.screen_center_x - 50 + random.randint(0, 100)
         monster_end_position.y = 280
         
-        self.monsters.append(SpriteNode('./assets/sprites/game/straightreaper.PNG',
-                             position = monster_start_position,
-                             parent = self))
-        
         monsterMoveAction = Action.move_to(monster_end_position.x, 
                                          monster_end_position.y, 
                                          self.monster_attack_speed,
                                          TIMING_SINODIAL)
+        self.monsterhp.append(str((40)*int(self.currentround)/2))
+        #self.monsterhp.append(str((random.randint(1,9999))))
+        self.monsters.append(SpriteNode('./assets/sprites/game/straightreaper.PNG',
+                             position = monster_start_position,
+                             parent = self))
         self.monsters[len(self.monsters)-1].run_action(monsterMoveAction)
